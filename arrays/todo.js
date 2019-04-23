@@ -12,7 +12,7 @@ const todos=[{
     completed: false
 }, {
     text: "call my daddy",
-    completed: false
+    completed: true
 }
 ]
 const removeTodo=function (todos,text) {
@@ -21,5 +21,13 @@ const removeTodo=function (todos,text) {
     })
     return todoIndex>=0?todos.splice(todoIndex,1):todos
 }
-removeTodo(todos,"buy food")
-console.log(todos)
+// removeTodo(todos,"buy food")
+// console.log(todos)
+
+const getThingsTodo=function (todos) {
+    return todos.filter((todo)=>{
+        return !todo.completed
+    })
+}
+
+console.log(getThingsTodo(todos))
