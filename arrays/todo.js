@@ -29,5 +29,18 @@ const getThingsTodo=function (todos) {
         return !todo.completed
     })
 }
-
 console.log(getThingsTodo(todos))
+
+const sortTodos= function (todos) {
+    todos.sort((a,b)=>{
+        if (a.completed && !b.completed){
+            return 1
+        } else if (b.completed && !a.completed){
+            return -1
+        } else{
+            return 0
+        }
+    })
+}
+sortTodos(todos)
+console.log(todos)
