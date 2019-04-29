@@ -16,7 +16,8 @@ const todos = [{
 }]
 
 const filters={
-    search:''
+    search:'',
+    hideCompeleted:false
 }
 
 const renderingTodos=function (todos,filters) {
@@ -32,13 +33,22 @@ const renderingTodos=function (todos,filters) {
     leftTodos.textContent = `you have ${notCompletesTodos.length} left to do`
     document.querySelector('#todos-container').appendChild(leftTodos)
 
+    if(!filters.hideCompeleted){
+        filteredTodos.forEach((todo) => {
+            const newTodo = document.createElement('p')
+            newTodo.textContent = todo.text
+            document.querySelector('#todos-container').appendChild(newTodo)
 
-    filteredTodos.forEach((todo) => {
-        const newTodo = document.createElement('p')
-        newTodo.textContent = todo.text
-        document.querySelector('#todos-container').appendChild(newTodo)
+        })
+    }else{
+        notCompletesTodos.forEach((todo) => {
+            const newTodo = document.createElement('p')
+            newTodo.textContent = todo.text
+            document.querySelector('#todos-container').appendChild(newTodo)
 
-    })
+        })
+    }
+    
 }
 renderingTodos(todos,filters)
 
@@ -55,6 +65,6 @@ document.querySelector('#search').addEventListener('input',(e)=>{
 })
 
 document.querySelector('#hideCompeleted').addEventListener('change',(e)=>{
-    const notCompleted=todos.filter((todo)=>!todo.completed)
-    e.target.checked ? renderingTodos(notCompleted, filters) : renderingTodos(todos, filters)
+    filters.hideCompeleted = e.target.checked
+    renderingTodos(todos, filters)
 })
