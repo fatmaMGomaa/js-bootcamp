@@ -53,3 +53,8 @@ document.querySelector('#search').addEventListener('input',(e)=>{
     filters.search=e.target.value
     renderingTodos(todos, filters)
 })
+
+document.querySelector('#hideCompeleted').addEventListener('change',(e)=>{
+    const notCompleted=todos.filter((todo)=>!todo.completed)
+    e.target.checked ? renderingTodos(notCompleted, filters) : renderingTodos(todos, filters)
+})
