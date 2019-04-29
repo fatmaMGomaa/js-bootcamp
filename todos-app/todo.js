@@ -15,22 +15,38 @@ const todos = [{
     completed: true
 }]
 
+const filters={
+    search:''
+}
 
-const renderingTodos=function (todos) {
-    const notCompletesTodos = todos.filter((todo, index) => !todo.completed )
+const renderingTodos=function (todos,filters) {
+    
+    const filteredTodos = todos.filter((todo) => {
+        return todo.text.toLowerCase().includes(filters.search)
+    })
+    
+    document.querySelector('#todos-container').innerHTML = ''
+
+    const notCompletesTodos = filteredTodos.filter((todo, index) => !todo.completed)
     leftTodos = document.createElement('h2')
     leftTodos.textContent = `you have ${notCompletesTodos.length} left to do`
-    document.querySelector('body').appendChild(leftTodos)
+    document.querySelector('#todos-container').appendChild(leftTodos)
 
-    todos.forEach((todo) => {
+
+    filteredTodos.forEach((todo) => {
         const newTodo = document.createElement('p')
         newTodo.textContent = todo.text
-        document.querySelector('body').appendChild(newTodo)
+        document.querySelector('#todos-container').appendChild(newTodo)
 
     })
 }
-renderingTodos(todos)
+renderingTodos(todos,filters)
 
-document.querySelector('button').addEventListener('click',(e)=>{
+document.querySelector('#create-todo').addEventListener('click',(e)=>{
     console.log("it's fired")
+})
+
+document.querySelector('#search').addEventListener('input',(e)=>{
+    filters.search=e.target.value
+    renderingTodos(todos, filters)
 })
