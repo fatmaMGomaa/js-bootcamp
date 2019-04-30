@@ -1,24 +1,12 @@
-const todos = [{
-    text: "walk with wesky",
-    completed: true
-}, {
-    text: "Buy food",
-    completed: false
-}, {
-    text: "do work",
-    completed: true
-}, {
-    text: "study",
-    completed: false
-}, {
-    text: "call my daddy",
-    completed: true
-}]
+let todos = []
 
 const filters={
     searchText:'',
     hideCompeleted:false
 }
+
+const todosJson=localStorage.getItem("todos")
+todosJson!==null?todos=JSON.parse(todosJson):todos
 
 const renderingTodos=function (todos,filters) {
     
@@ -55,6 +43,7 @@ document.querySelector('#search').addEventListener('input', (e) => {
 document.querySelector('#adding-form').addEventListener('submit',(e)=>{
     e.preventDefault()
     todos.push({ text: e.target.elements.addingTodo.value, completed: false})
+    localStorage.setItem("todos",JSON.stringify(todos))
     e.target.elements.addingTodo.value=''
     renderingTodos(todos, filters)
 })
