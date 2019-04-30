@@ -16,41 +16,41 @@ const todos = [{
 }]
 
 const filters={
-    search:'',
+    searchText:'',
     hideCompeleted:false
 }
 
 const renderingTodos=function (todos,filters) {
     
     const filteredTodos = todos.filter((todo) => {
-        return todo.text.toLowerCase().includes(filters.search)
+        const searchTextMatch = todo.text.toLowerCase().includes(filters.searchText.toLowerCase())
+        const hideCompletedMatch = !filters.hideCompeleted || !todo.completed
+        
+        return searchTextMatch && hideCompletedMatch
     })
-    
-    document.querySelector('#todos-container').innerHTML = ''
 
     const notCompletesTodos = filteredTodos.filter((todo, index) => !todo.completed)
-    leftTodos = document.createElement('h2')
+
+    document.querySelector('#todos-container').innerHTML = ''
+    
+    const leftTodos = document.createElement('h2')
     leftTodos.textContent = `you have ${notCompletesTodos.length} left to do`
     document.querySelector('#todos-container').appendChild(leftTodos)
 
-    if(!filters.hideCompeleted){
-        filteredTodos.forEach((todo) => {
-            const newTodo = document.createElement('p')
-            newTodo.textContent = todo.text
-            document.querySelector('#todos-container').appendChild(newTodo)
 
-        })
-    }else{
-        notCompletesTodos.forEach((todo) => {
-            const newTodo = document.createElement('p')
-            newTodo.textContent = todo.text
-            document.querySelector('#todos-container').appendChild(newTodo)
+    filteredTodos.forEach((todo) => {
+        const newTodo = document.createElement('p')
+        newTodo.textContent = todo.text
+        document.querySelector('#todos-container').appendChild(newTodo)
 
-        })
-    }
-    
+    })
 }
 renderingTodos(todos,filters)
+
+document.querySelector('#search').addEventListener('input', (e) => {
+    filters.searchText = e.target.value
+    renderingTodos(todos, filters)
+})
 
 document.querySelector('#adding-form').addEventListener('submit',(e)=>{
     e.preventDefault()
@@ -59,12 +59,8 @@ document.querySelector('#adding-form').addEventListener('submit',(e)=>{
     renderingTodos(todos, filters)
 })
 
-document.querySelector('#search').addEventListener('input',(e)=>{
-    filters.search=e.target.value
-    renderingTodos(todos, filters)
-})
-
-document.querySelector('#hideCompeleted').addEventListener('change',(e)=>{
+document.querySelector('#hide-Compeleted').addEventListener('change',(e)=>{
     filters.hideCompeleted = e.target.checked
     renderingTodos(todos, filters)
+    console.log(filters.hideCompeleted)
 })
