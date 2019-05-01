@@ -12,6 +12,11 @@ const removeTodo=function (id) {
     todoIndex>-1?todos.splice(todoIndex,1):todos
 }
 
+const toggleTodo=function (id) {
+    const todo=todos.find((todo)=>todo.id===id)
+    todo !== undefined ? todo.completed=!todo.completed:todo.completed
+}
+
 const generateTodoDom=function (todo) {
     const newTodo = document.createElement('div')
     const newCheckbox = document.createElement('input')
@@ -33,7 +38,7 @@ const generateTodoDom=function (todo) {
         renderingTodos(todos,filters)
     })
     newCheckbox.addEventListener('change',(e)=>{
-        todo.completed = e.target.checked
+        toggleTodo(todo.id)
         saveTodos(todos)
         renderingTodos(todos, filters)
     })
