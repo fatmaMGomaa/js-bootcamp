@@ -7,6 +7,11 @@ const saveTodos=function(todos) {
     return localStorage.setItem("todos", JSON.stringify(todos))
 }
 
+const removeTodo=function (id) {
+    const todoIndex=todos.findIndex((todo)=>todo.id===id)
+    todoIndex>-1?todos.splice(todoIndex,1):todos
+}
+
 const generateTodoDom=function (todo) {
     const newTodo = document.createElement('div')
     const newCheckbox = document.createElement('input')
@@ -14,12 +19,25 @@ const generateTodoDom=function (todo) {
     const newButton = document.createElement('button')
 
     newCheckbox.setAttribute('type','checkbox')
+    newCheckbox.checked = todo.completed
     newText.textContent = todo.text+"  "
     newButton.textContent = "x"
 
     newTodo.appendChild(newCheckbox)
     newTodo.appendChild(newText)
     newTodo.appendChild(newButton)
+
+    newButton.addEventListener('click',()=>{
+        removeTodo(todo.id)
+        saveTodos(todos)
+        renderingTodos(todos,filters)
+    })
+    newCheckbox.addEventListener('change',(e)=>{
+        todo.completed = e.target.checked
+        saveTodos(todos)
+        renderingTodos(todos, filters)
+    })
+
     return newTodo
 }
 
