@@ -6,14 +6,19 @@ note===undefined?location.assign('/index.html'):note
 
 document.querySelector('#note-title').value=note.title
 document.querySelector('#note-body').value = note.body
+document.querySelector('#last-editing').textContent = `last edited ${moment(note.updatedDate).fromNow()}`
 
 document.querySelector('#note-title').addEventListener('input',(e)=>{
    note.title= e.target.value
+   note.updatedDate = moment().valueOf()
+    document.querySelector('#last-editing').textContent = `last edited ${moment(note.updatedDate).fromNow()}`
    saveNotes(notes)
 })
 
 document.querySelector('#note-body').addEventListener('input', (e) => {
     note.body = e.target.value
+    note.updatedDate=moment().valueOf()
+    document.querySelector('#last-editing').textContent = `last edited ${moment(note.updatedDate).fromNow()}`
     saveNotes(notes)
 })
 
@@ -32,22 +37,6 @@ window.addEventListener('storage',(e)=>{
 
         document.querySelector('#note-title').value = note.title
         document.querySelector('#note-body').value = note.body
-
+        document.querySelector('#last-editing').textContent = `last edited ${moment(note.updatedDate).fromNow()}`
     }
 })
-
-const date1=new Date('october 31 1992')
-const date2=new Date('november 20 1955')
-
-const timeStamp1=date1.getTime()
-const timeStamp2 = date2.getTime()
-
-if(timeStamp1>timeStamp2){
-    console.log(date2.toString())
-}else{
-    console.log(date1.toString())
-}
-
-const myBirthday = moment()
-myBirthday.year(1992).month(9).date(31)
-console.log(myBirthday.format('MMM D, YYYY'))
