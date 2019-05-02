@@ -1,24 +1,24 @@
+'use strict'
+
 // Read existing notes from localStorage
-const getSavedNotes = function () {
+const getSavedNotes = () => {
     const notesJSON = localStorage.getItem('notes')
 
-    if (notesJSON !== null) {
-        return JSON.parse(notesJSON)
-    } else {
+    try{
+        return notesJSON ? JSON.parse(notesJSON) : []
+    }catch(e){
         return []
     }
 }
 
 // Save the notes to localStorage
-const saveNotes = function (notes) {
+const saveNotes = (notes) => {
     localStorage.setItem('notes', JSON.stringify(notes))
 }
 
 // Remove a note from the list
-const removeNote = function (id) {
-    const noteIndex = notes.findIndex(function (note) {
-        return note.id === id
-    })
+const removeNote = (id) => {
+    const noteIndex = notes.findIndex((note) => note.id === id)
 
     if (noteIndex > -1) {
         notes.splice(noteIndex, 1)
@@ -26,7 +26,7 @@ const removeNote = function (id) {
 }
 
 // Generate the DOM structure for a note
-const generateNoteDOM = function (note) {
+const generateNoteDOM = (note) => {
     const noteEl = document.createElement('div')
     const textEl = document.createElement('a')
     const button = document.createElement('button')
@@ -34,7 +34,7 @@ const generateNoteDOM = function (note) {
     // Setup the remove note button
     button.textContent = 'x'
     noteEl.appendChild(button)
-    button.addEventListener('click', function () {
+    button.addEventListener('click', () => {
         removeNote(note.id)
         saveNotes(notes)
         renderNotes(notes, filters)
@@ -53,7 +53,7 @@ const generateNoteDOM = function (note) {
 }
 
 //generate Sorted Notes
-const generateSortedNotes=function (notes,sortBy) {
+const generateSortedNotes=(notes,sortBy) => {
     if (sortBy ==='byEdited'){
         return notes.sort((a,b)=>{
             if (a.updatedDate > b.updatedDate){
@@ -89,15 +89,13 @@ const generateSortedNotes=function (notes,sortBy) {
     }
 }
 // Render application notes
-const renderNotes = function (notes, filters) {
+const renderNotes = (notes, filters) => {
     notes=generateSortedNotes(notes,filters.sortBy)
-    const filteredNotes = notes.filter(function (note) {
-        return note.title.toLowerCase().includes(filters.searchText.toLowerCase())
-    })
+    const filteredNotes = notes.filter((note) => note.title.toLowerCase().includes(filters.searchText.toLowerCase()))
 
     document.querySelector('#notes').innerHTML = ''
 
-    filteredNotes.forEach(function (note) {
+    filteredNotes.forEach((note) => {
         const noteEl = generateNoteDOM(note)
         document.querySelector('#notes').appendChild(noteEl)
     })

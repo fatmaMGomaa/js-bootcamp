@@ -1,8 +1,12 @@
+'use strict'
+
 const noteId=location.hash.substring(1)
 let notes = getSavedNotes()
-let note=notes.find((note)=>note.id===noteId)
+let note=notes.find((note) => note.id===noteId)
 
-note===undefined?location.assign('/index.html'):note
+if(!note){
+    location.assign('/index.html')
+}
 
 document.querySelector('#note-title').value=note.title
 document.querySelector('#note-body').value = note.body
@@ -33,7 +37,9 @@ window.addEventListener('storage',(e)=>{
         notes=JSON.parse(e.newValue)
         note = notes.find((note) => note.id === noteId)
 
-        note === undefined ? location.assign('/index.html') : note
+        if (!note) {
+            location.assign('/index.html')
+        }
 
         document.querySelector('#note-title').value = note.title
         document.querySelector('#note-body').value = note.body

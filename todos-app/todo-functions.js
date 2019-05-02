@@ -1,23 +1,32 @@
-const getSavedTodos=function () {
+'use strict'
+
+const getSavedTodos= () => {
     const todosJson = localStorage.getItem("todos")
-    return todosJson !== null ? JSON.parse(todosJson) : []
+
+    try{
+        return todosJson ? JSON.parse(todosJson) : []
+    }catch(e){
+        return []
+    }
 }
 
-const saveTodos=function(todos) {
-    return localStorage.setItem("todos", JSON.stringify(todos))
-}
+const saveTodos = (todos) => localStorage.setItem("todos", JSON.stringify(todos))
 
-const removeTodo=function (id) {
+const removeTodo= (id) => {
     const todoIndex=todos.findIndex((todo)=>todo.id===id)
-    todoIndex>-1?todos.splice(todoIndex,1):todos
+    if (todoIndex > -1){
+        todos.splice(todoIndex, 1)
+    }
 }
 
-const toggleTodo=function (id) {
+const toggleTodo= (id) => {
     const todo=todos.find((todo)=>todo.id===id)
-    todo !== undefined ? todo.completed=!todo.completed:todo.completed
+    if (todo){
+        todo.completed = !todo.completed
+    }
 }
 
-const generateTodoDom=function (todo) {
+const generateTodoDom=(todo) => {
     const newTodo = document.createElement('div')
     const newCheckbox = document.createElement('input')
     const newText = document.createElement('span')
@@ -46,13 +55,13 @@ const generateTodoDom=function (todo) {
     return newTodo
 }
 
-const generateSummaryDom = function (notCompletesTodos) {
+const generateSummaryDom = (notCompletesTodos) => {
     const leftTodos = document.createElement('h2')
     leftTodos.textContent = `you have ${notCompletesTodos.length} left to do`
     return leftTodos
 }
 
-const renderingTodos = function (todos, filters) {
+const renderingTodos = (todos, filters) => {
 
     const filteredTodos = todos.filter((todo) => {
         const searchTextMatch = todo.text.toLowerCase().includes(filters.searchText.toLowerCase())
